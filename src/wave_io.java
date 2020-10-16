@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * 
@@ -41,13 +42,21 @@ public class wave_io {
 			validBits = readWavFile.getValidBits();
 			sampleRate = readWavFile.getSampleRate();
 
+			System.out.println(samples);
+			
+			PrintWriter writer = new PrintWriter("ascii-samples.txt", "UTF-8");
+			
+			System.out.println(readWavFile.sound.length);
+			
+			
 			// 2a Samples schreiben
 			for (int i = 0; i < samples; i++) {
-
-				// ********* ToDo ***************
-
+				writer.println(readWavFile.sound[i]);
 			}
 
+
+			writer.close();
+			
 			if (args.length == 1)
 				System.exit(0);
 
@@ -66,7 +75,7 @@ public class wave_io {
 
 			// 2e Downsampling
 			for (int i = 0; i < samples; i++) {
-
+				
 				// ********* ToDo ***************
 
 			}
