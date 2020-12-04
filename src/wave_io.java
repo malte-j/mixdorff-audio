@@ -28,16 +28,36 @@ public class wave_io {
 		}
 
 		try {			
-			short[] downsampledAudio = new short[readWavFile.sound.length];
 			
-			int db = 20;
-			double a = Math.pow(10, db/20);
+			// 1c
 			
+//			short[] downsampledAudio = new short[readWavFile.sound.length];
+//			
+//			int db = 20;
+//			double a = Math.pow(10, db/20);
+//			
+//			for (int i = 0; i < samples; i++) {
+//				downsampledAudio[i] = clamp(a * readWavFile.sound[i]);
+//			}
+//			
+//			WavFile.write_wav(outFilename, numChannels, numFrames, validBits, sampleRate, downsampledAudio);
+//			
+			
+			
+			// 2 a
 			for (int i = 0; i < samples; i++) {
-				downsampledAudio[i] = clamp(a * readWavFile.sound[i]);
+				
+				double s = 200 / 1000;
+				int N = (int) (sampleRate * s);
+				double a = 0.6;
+				int prevSample = i-N;
+				
+				if(prevSample > 0) {
+					readWavFile.sound[i] = clamp(readWavFile.sound[i] + a * readWavFile.sound[prevSample]);
+				}
 			}
 			
-			WavFile.write_wav(outFilename, numChannels, numFrames, validBits, sampleRate, downsampledAudio);
+			WavFile.write_wav(outFilename, numChannels, numFrames, validBits, sampleRate, readWavFile.sound);
 		} catch (Exception e) {
 			System.err.println(e);
 			e.printStackTrace();
