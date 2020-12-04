@@ -1,4 +1,3 @@
-
 // File format is based on the information from
 // http://www.sonicspot.com/guide/wavefiles.html
 // http://www.blitter.com/~russtopia/MIDI/~jglatt/tech/wave.htm

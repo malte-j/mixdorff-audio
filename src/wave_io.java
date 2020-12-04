@@ -1,11 +1,6 @@
 import java.io.IOException;
 import java.io.PrintWriter;
 
-/**
- * 
- * @author GroRieJa
- *
- */
 public class wave_io {
 	public static void main(String[] args) {
 		int samples = 0;
@@ -14,22 +9,8 @@ public class wave_io {
 		long numFrames = 0;
 		int numChannels = 0;
 
-		String inFilename = null;
-		String outFilename = null;
-
-		if (args.length < 1) {
-			try {
-				throw new WavFileException("At least one filename specified  (" + args.length + ")");
-			} catch (WavFileException e1) {
-				e1.printStackTrace();
-			}
-		}
-
-		// Samples in dem Array readWavFile.sound
-
-		inFilename = args[0];
-
-		// Implementierung bei einem Eingabeparameter
+		String inFilename = "A1_musik_04.wav";
+		String outFilename = "modified.wav";
 
 		WavFile readWavFile = null;
 		try {
@@ -42,64 +23,28 @@ public class wave_io {
 			validBits = readWavFile.getValidBits();
 			sampleRate = readWavFile.getSampleRate();
 
-			System.out.println(samples);
-			
-			PrintWriter writer = new PrintWriter("ascii-samples.txt", "UTF-8");
-			
-			System.out.println(readWavFile.sound.length);
-			
-			
-			// 2a Samples schreiben
-			for (int i = 0; i < samples; i++) {
-				writer.println(readWavFile.sound[i]);
-			}
-
-
-			writer.close();
-			
-			if (args.length == 1)
-				System.exit(0);
-
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (WavFileException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
-		// Implementierung bei Ein-und Ausgabeparameter
-
-		outFilename = args[1];
-		try {
-
-			// 2e Downsampling
+		try {			
+			short[] downsampledAudio = new short[readWavFile.sound.length];
+			
+			int db = 20;
+			double a = Math.pow(10, db/20);
+			
 			for (int i = 0; i < samples; i++) {
-				
-				// ********* ToDo ***************
-
+				downsampledAudio[i] = clamp(a * readWavFile.sound[i]);
 			}
-
-			// 3b Bitreduzierung
-			int reduced_bits = 1;
-			for (int i = 0; i < samples; i++) {
-
-				// ********* ToDo ***************
-
-			}
-
-			// 3e Bitreduzierung Differenz
-			reduced_bits = 1;
-			for (int i = 0; i < samples; i++) {
-
-				// ********* ToDo ***************
-
-			}
-
-			WavFile.write_wav(outFilename, numChannels, numFrames, validBits, sampleRate, readWavFile.sound);
+			
+			WavFile.write_wav(outFilename, numChannels, numFrames, validBits, sampleRate, downsampledAudio);
 		} catch (Exception e) {
 			System.err.println(e);
 			e.printStackTrace();
 		}
+	}
+	
+	static short clamp(double d) {
+		return (short) Math.min(Short.MAX_VALUE, Math.max(Short.MIN_VALUE, d));
 	}
 }
