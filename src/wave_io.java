@@ -9,8 +9,8 @@ public class wave_io {
 		long numFrames = 0;
 		int numChannels = 0;
 
-		String inFilename = "Noise.wav";
-		String outFilename = "Noise_filter_a.wav";
+		String inFilename = "sine_1k.wav";
+		String outFilename = "sine_1k_12db.wav";
 
 		WavFile readWavFile = null;
 		try {
@@ -32,15 +32,15 @@ public class wave_io {
 			// 1c
 			
 //			short[] newAudio = new short[readWavFile.sound.length];
-//
-//			int db = 12;
-//			double a = Math.pow(10, db/20);
-//
-//			for (int i = 0; i < samples; i++) {
-//				newAudio[i] = clamp(a * readWavFile.sound[i]);
-//			}
-//
-//			WavFile.write_wav(outFilename, numChannels, numFrames, validBits, sampleRate, newAudio);
+
+			double db = 12;
+			double a = Math.pow(10, db/20);
+
+			for (int i = 0; i < samples; i++) {
+				readWavFile.sound[i] = clamp(a * readWavFile.sound[i]);
+			}
+
+			WavFile.write_wav(outFilename, numChannels, numFrames, validBits, sampleRate, readWavFile.sound);
 //			
 			
 			
@@ -63,15 +63,15 @@ public class wave_io {
 			// 3 a
 
 			// Filter b
-			for (int i = 0; i < samples; i++) {
-				int prevSample = i - 1 * numChannels;
-
-				if(prevSample > 0) {
-					readWavFile.sound[i] = clamp(0.5 * readWavFile.sound[i] - 0.45 * readWavFile.sound[i - 1 * numChannels]);
-				}
-			}
-
-			WavFile.write_wav(outFilename, numChannels, numFrames, validBits, sampleRate, readWavFile.sound);
+//			for (int i = 0; i < samples; i++) {
+//				int prevSample = i - 1 * numChannels;
+//
+//				if(prevSample > 0) {
+//					readWavFile.sound[i] = clamp(0.5 * readWavFile.sound[i] - 0.45 * readWavFile.sound[i - 1 * numChannels]);
+//				}
+//			}
+//
+//			WavFile.write_wav(outFilename, numChannels, numFrames, validBits, sampleRate, readWavFile.sound);
 
 
 		} catch (Exception e) {
